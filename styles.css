@@ -1,0 +1,30 @@
+#hide_button {
+    display: flex;
+    align-items: end;
+    padding: 0 12px;
+}
+#hide_button label {
+    color: #80868b;
+    padding-bottom: 8px;
+    border-bottom: 3px solid transparent;
+    line-height: 19px;
+}
+#hide_button input {
+    margin-bottom: 0;
+    margin-right: 0;
+}
+.hidden {
+    display: none;
+}
+#hide_button label.checked {
+    color: inherit;
+    border-bottom-color: inherit;
+}
+div[data-inside-content-expander-position] > div.lr_container > div[class],
+div[style='margin-top:12px']:empty {
+    display: none;
+}
+div#rso > div[class]:has(div[data-rpos] > div.obcontainer),
+div#rso > div[class] div[data-rpos] > div.obcontainer {
+    margin-bottom: 6px;
+}
