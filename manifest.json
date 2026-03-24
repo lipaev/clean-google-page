@@ -1,13 +1,13 @@
 {
     "name": "Clean Google Search Page",
-    "version": "1.1.0",
+    "version": "1.1.0.1",
     "manifest_version": 3,
-    "description": "Extension adds button that hides AI answer and questions about query from google search results page.",
+    "description": "The extension adds a button that hides the AI answer and the 'People also ask' section from a Google search results page.",
     "permissions": ["scripting", "activeTab"],
     "icons": {
-        "32": "icons/Switch 32.png",
-        "48": "icons/Switch 48.png",
-        "64": "icons/Switch 64.png"
+        "32": "images/icons/Switch 32.png",
+        "48": "images/icons/Switch 48.png",
+        "64": "images/icons/Switch 64.png"
     },
     "content_scripts": [
         {
@@ -26,5 +26,5 @@
             }
         }
     },
-    "homepage_url": "https://github.com/lipaev/cleanGooglePage"
+    "homepage_url": "https://github.com/lipaev/clean-google-page"
 }
