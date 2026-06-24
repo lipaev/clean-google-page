@@ -1,48 +1,99 @@
-let ai_answer = document.querySelector("#rcnt > style + div")
+//create button
+let button_div = document.createElement("div")
+button_div.id = "hide_button"
+button_div.role = "listitem"
+let button_label = document.createElement("label")
+button_label.innerText = "Hide "
+let button_input = document.createElement("input")
+button_input.type = "checkbox"
+button_input.checked = true
+button_label.appendChild(button_input)
+button_div.appendChild(button_label)
 
-//questions about the query
-let qat = document.querySelector("#rso > div[class]:has(div[class][data-rpos] > div[jsname][data-initq] > div > div[jsname])")
 
-if ((ai_answer || qat) && browser.runtime.getFrameId(window) === 0) {
-    chrome.runtime.sendMessage({});
-    hide_elements();
-};
+if (navigator.userAgent.includes("Android")) {
+    //For android
 
-function hide_elements() {
+    let ai_answer_andr = document.querySelectorAll("#rso > div:has(div[role='heading'][aria-level='2'], span[role='heading'][aria-level='2'])")
 
-    //create button
-    let div_container = document.createElement("div")
-    div_container.id = "hide_button"
-    div_container.role = "listitem"
-    let button_label = document.createElement("label")
-    button_label.innerText = "Hide "
-    let hide_button = document.createElement("input")
-    hide_button.type = "checkbox"
-    hide_button.checked = true
+    if (ai_answer_andr && browser.runtime.getFrameId(window) === 0) {
+        chrome.runtime.sendMessage({});
+        hide_elements();
+    };
 
-    //add classes by event
-    hide_button.addEventListener("change", () => {
-        if (hide_button.checked) {
-            ai_answer?.classList.add("hidden")
-            qat?.classList.add("hidden")
-            button_label.classList.add("checked")
+    function hide_elements() {
+        //add classes by event
+        button_input.addEventListener("change", () => {
+            if (button_input.checked) {
+                for (let el of ai_answer_andr) {
+                    let headings = ["AI Overview", "People also ask", "People also search for"]
+                    if (headings.includes(
+                        el.querySelector("div[role='heading'][aria-level='2']")?.textContent
+                    ) || headings.includes(
+                        el.querySelector("span[role='heading'][aria-level='2']")?.textContent
+                    )) {
+                        el?.classList.add("hidden")
+                    }
+                }
+                button_label.classList.add("checked")
+            } else {
+                for (let el of ai_answer_andr) {
+                    let headings = ["AI Overview", "People also ask", "People also search for"]
+                    if (headings.includes(
+                        el.querySelector("div[role='heading'][aria-level='2']")?.textContent
+                    ) || headings.includes(
+                        el.querySelector("span[role='heading'][aria-level='2']")?.textContent
+                    )) {
+                        el?.classList.remove("hidden")
+                    }
+                }
+                button_label.classList.remove("checked")
+            }
+        })
+        button_input.dispatchEvent(new Event('change', { bubbles: true }));
+
+        let insert_in_andr = document.querySelector("#main div[role=list]:has(div[role='listitem'])")
+        if (!document.querySelector("#hide_button")) {
+            insert_in_andr?.prepend(button_div)
+            button_label.classList.add("android")
         } else {
-            ai_answer?.classList.remove("hidden")
-            qat?.classList.remove("hidden")
-            button_label.classList.remove("checked")
+            document?.querySelector("#hide_button").replaceWith(button_div)
         }
-    })
-    hide_button.dispatchEvent(new Event('change', { bubbles: true }));
+    }
 
+} else {
+    //For other platforms
 
-    //insert button
-    button_label.appendChild(hide_button)
-    div_container.appendChild(button_label)
-    let insert_in = document.querySelector("div[role='list']")
-    let insert_before = document.querySelector("div[role='list'] > div:first-child")
-    if (!document.querySelector("#hide_button")) {
-        insert_in.insertBefore(div_container, insert_before)
-    } else {
-        document.querySelector("#hide_button").replaceWith(div_container)
+    let ai_answer = document.querySelector("#rcnt > style + div")
+    //"People also ask"
+    let paa = document.querySelector("#rso > div > div:has(div[class][data-rpos] > div[jsname][data-initq] > div > div[jsname])")
+
+    if ((ai_answer || paa) && browser.runtime.getFrameId(window) === 0) {
+        chrome.runtime.sendMessage({});
+        hide_elements();
+    };
+
+    function hide_elements() {
+        //add classes by event
+        button_input.addEventListener("change", () => {
+            if (button_input.checked) {
+                ai_answer?.classList.add("hidden")
+                paa?.classList.add("hidden")
+                button_label.classList.add("checked")
+            } else {
+                ai_answer?.classList.remove("hidden")
+                paa?.classList.remove("hidden")
+                button_label.classList.remove("checked")
+            }
+        })
+        button_input.dispatchEvent(new Event('change', { bubbles: true }));
+
+        //insert button
+        let insert_in = document.querySelector("div[role='list']")
+        if (!document.querySelector("#hide_button")) {
+            insert_in?.prepend(button_div)
+        } else {
+            document?.querySelector("#hide_button").replaceWith(button_div)
+        }
     }
 }
