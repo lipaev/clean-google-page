@@ -1,6 +1,6 @@
 {
     "name": "Clean Google Search Page",
-    "version": "1.2",
+    "version": "1.2.4",
     "manifest_version": 3,
     "description": "The extension adds a button that hides the AI answer, 'People also ask' and 'People also search for' sections from a Google search results page.",
     "permissions": ["scripting", "activeTab"],
